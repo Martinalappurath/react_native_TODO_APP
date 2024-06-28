@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,58 +6,68 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  StyleSheet,
   Switch,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+} from "react-native";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import styles from "../../scripts/styles"; // Import styles from the styles.js file
 
+// Use to define the type for a Task
 type Task = {
   id: string;
   title: string;
-  status: 'due' | 'done';
+  status: "due" | "done";
 };
 
 const App = () => {
+  // State to manage the list of tasks
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [taskTitle, setTaskTitle] = useState('');
+  // State to manage the current task title input
+  const [taskTitle, setTaskTitle] = useState("");
 
+  // Function to add a new task
   const addTask = () => {
     if (taskTitle.trim().length > 0) {
+      // Ensure the task title is not empty
       setTasks([
         ...tasks,
         {
-          id: Math.random().toString(),
-          title: taskTitle,
-          status: 'due',
+          id: Math.random().toString(), // Generate a random ID for the new task
+          title: taskTitle, // Set the task title
+          status: "due", // Default status is 'due'
         },
       ]);
-      setTaskTitle('');
+      setTaskTitle("");
     }
   };
 
+  //toggle the status of a task
   const toggleTaskStatus = (taskId: string) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === taskId
-          ? { ...task, status: task.status === 'due' ? 'done' : 'due' }
+          ? { ...task, status: task.status === "due" ? "done" : "due" }
           : task
       )
     );
   };
 
+  //delete a task
   const deleteTask = (taskId: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   };
 
+  // Function to render each task item
   const renderTaskItem = ({ item }: { item: Task }) => (
     <View style={styles.taskItem}>
       <View style={styles.taskContent}>
         <Text style={styles.taskTitle}>{item.title}</Text>
-        <Text style={styles.taskStatus}>{item.status === 'done' ? 'Done' : 'Due'}</Text>
+        <Text style={styles.taskStatus}>
+          {item.status === "done" ? "Done" : "Due"}
+        </Text>
       </View>
       <View style={styles.taskActions}>
         <Switch
-          value={item.status === 'done'}
+          value={item.status === "done"}
           onValueChange={() => toggleTaskStatus(item.id)}
         />
         <TouchableOpacity onPress={() => deleteTask(item.id)}>
@@ -80,79 +90,21 @@ const App = () => {
         <TouchableOpacity
           style={[
             styles.addButton,
-            { backgroundColor: taskTitle.trim() ? '#007bff' : '#c0c0c0' },
+            { backgroundColor: taskTitle.trim() ? "#007bff" : "#c0c0c0" },
           ]}
           onPress={addTask}
-          disabled={!taskTitle.trim()}
+          disabled={!taskTitle.trim()} // Disable the button if the input is empty
         >
           <Text style={styles.addButtonText}>Add Task</Text>
         </TouchableOpacity>
       </View>
       <FlatList
-        data={tasks}
-        renderItem={renderTaskItem}
-        keyExtractor={(item) => item.id}
+        data={tasks} // Data source for the FlatList
+        renderItem={renderTaskItem} // Function to render each item
+        keyExtractor={(item) => item.id} // Key extractor for FlatList items
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 16,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  input: {
-    flex: 1,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 8,
-    marginRight: 8,
-  },
-  addButton: {
-    padding: 10,
-    borderRadius: 4,
-  },
-  addButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  taskItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 12,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 8,
-  },
-  taskContent: {
-    flex: 1,
-  },
-  taskTitle: {
-    fontSize: 16,
-  },
-  taskStatus: {
-    fontSize: 14,
-    color: '#555',
-  },
-  taskActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
 
 export default App;
