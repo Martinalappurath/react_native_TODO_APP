@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor:'#EDC26B',
+    backgroundColor:'#ED9DBB',
   },
   header: {
     fontSize: 24,
@@ -34,27 +34,27 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
   },
-  taskItem: {
+  todoItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 12,
+    padding: 10,
     borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 4,
     marginBottom: 8,
   },
-  taskContent: {
+  todoContent: {
     flex: 1,
   },
-  taskTitle: {
+  todoTitle: {
     fontSize: 16,
   },
-  taskStatus: {
+  todoStatus: {
     fontSize: 14,
     color: '#555',
   },
-  taskActions: {
+  todoActions: {
     flexDirection: 'row',
     alignItems: 'center',
   },
